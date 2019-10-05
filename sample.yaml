@@ -1,0 +1,82 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: "2048-deployment"
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: "2048"
+    spec:
+      containers:
+      - image: 432827583079.dkr.ecr.us-east-2.amazonaws.com/doceree:latest
+        imagePullPolicy: Always
+        name: "2048"
+        ports:
+        - containerPort: 80
+      imagePullSecrets:
+        name: us-east-2-ecr-registry
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: "service-2048"
+spec:
+  ports:
+    - port: 80
+      targetPort: 80
+      protocol: TCP
+  type: NodePort
+  selector:
+    app: "2048"
+---
+kind: Pod
+apiVersion: v1
+metadata:
+  name: apple-app
+  labels:
+    app: apple
+spec:
+  containers:
+    - name: apple-app
+      image: 432827583079.dkr.ecr.us-east-2.amazonaws.com/doceree:apple
+      args:
+        - "-text=apple"
+  imagePullSecrets:
+    name: us-east-2-ecr-registry
+---
+kind: Service
+apiVersion: v1
+metadata:
+  name: apple-service
+spec:
+  selector:
+    app: apple
+  ports:
+    - port: 5678 # Default port for image
+---
+kind: Pod
+apiVersion: v1
+metadata:
+  name: banana-app
+  labels:
+    app: banana
+spec:
+  containers:
+    - name: banana-app
+      image: 432827583079.dkr.ecr.us-east-2.amazonaws.com/doceree:banana
+      args:
+        - "-text=banana"
+  imagePullSecrets:
+    name: us-east-2-ecr-registry
+---
+kind: Service
+apiVersion: v1
+metadata:
+  name: banana-service
+spec:
+  selector:
+    app: banana
+  ports:
+    - port: 5678 # Default port for image
