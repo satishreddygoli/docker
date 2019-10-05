@@ -16,7 +16,7 @@ spec:
         ports:
         - containerPort: 80
       imagePullSecrets:
-        name: us-east-2-ecr-registry
+        - name: us-east-2-ecr-registry
 ---
 apiVersion: v1
 kind: Service
@@ -44,7 +44,7 @@ spec:
       args:
         - "-text=apple"
   imagePullSecrets:
-    name: us-east-2-ecr-registry
+    - name: us-east-2-ecr-registry
 ---
 kind: Service
 apiVersion: v1
@@ -69,7 +69,7 @@ spec:
       args:
         - "-text=banana"
   imagePullSecrets:
-    name: us-east-2-ecr-registry
+    - name: us-east-2-ecr-registry
 ---
 kind: Service
 apiVersion: v1
